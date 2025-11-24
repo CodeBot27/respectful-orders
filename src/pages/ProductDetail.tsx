@@ -46,10 +46,10 @@ const ProductDetail = () => {
           Back
         </Button>
 
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
           {/* Images */}
           <div className="space-y-4">
-            <div className="relative aspect-square overflow-hidden rounded-lg bg-muted">
+            <div className="relative w-full max-w-lg mx-auto aspect-square overflow-hidden rounded-lg bg-muted">
               <img
                 src={product.images[selectedImage]}
                 alt={product.name}
@@ -64,7 +64,7 @@ const ProductDetail = () => {
               )}
             </div>
             {product.images.length > 1 && (
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-4 gap-4 max-w-lg mx-auto">
                 {product.images.map((image, index) => (
                   <button
                     key={index}
