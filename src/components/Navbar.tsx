@@ -33,6 +33,12 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
+            <Link to="/about" className="text-sm font-medium transition-colors hover:text-accent">
+              About
+            </Link>
+            <Link to="/contact" className="text-sm font-medium transition-colors hover:text-accent">
+              Contact
+            </Link>
           </div>
 
           {/* Cart & Mobile Menu */}
@@ -66,6 +72,12 @@ const Navbar = () => {
                       {link.label}
                     </Link>
                   ))}
+                  <Link to="/about" className="text-lg font-medium transition-colors hover:text-accent">
+                    About
+                  </Link>
+                  <Link to="/contact" className="text-lg font-medium transition-colors hover:text-accent">
+                    Contact
+                  </Link>
                 </div>
               </SheetContent>
             </Sheet>
