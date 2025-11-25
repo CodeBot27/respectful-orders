@@ -118,7 +118,6 @@ export const products: Product[] = [
       "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?w=800&h=800&fit=crop",
     ],
     inStock: true,
-    bestSeller: true,
   },
   {
     id: "10",

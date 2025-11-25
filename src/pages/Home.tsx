@@ -110,7 +110,7 @@ const Home = () => {
       </section>
 
       {/* Best Sellers */}
-      <section className="container mx-auto px-20 py-20">
+      <section className="w-full py-20 overflow-hidden">
         <div className="text-center mb-12 animate-slide-up">
           <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 dark:text-white">
             Best Sellers
@@ -119,41 +119,18 @@ const Home = () => {
             Our top-selling items loved by customers across South Africa
           </p>
         </div>
-        {/* Embla carousel */}
-        <div className="embla">
-          <div
-            ref={emblaRef}
-            className="embla__viewport overflow-hidden"
-            onMouseEnter={() => setPaused(true)}
-            onMouseLeave={() => setPaused(false)}
-          >
-            <div className="embla__container flex gap-4">
-              {bestSellers.map((product, index) => (
-                <div
-                  key={product.id}
-                  className="embla__slide flex-none w-[240px] sm:w-[280px] md:w-[300px] animate-scale-in"
-                  style={{ animationDelay: `${index * 0.06}s` }}
-                >
-                  <ProductCard product={product} />
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="flex items-center justify-center gap-4 mt-6">
-            <button
-              onClick={() => embla && embla.scrollPrev()}
-              className="px-3 py-2 bg-background/80 rounded-md hover:bg-background/90"
-              aria-label="Previous"
-            >
-              ‹
-            </button>
-            <button
-              onClick={() => embla && embla.scrollNext()}
-              className="px-3 py-2 bg-background/80 rounded-md hover:bg-background/90"
-              aria-label="Next"
-            >
-              ›
-            </button>
+
+        <div className="relative w-full overflow-hidden">
+          {/* Track that scrolls continuously */}
+          <div className="flex w-max animate-marquee">
+            {[...bestSellers, ...bestSellers].map((product, index) => (
+              <div
+                key={index}
+                className="w-[180px] sm:w-[200px] md:w-[220px] mx-4 flex-none"
+              >
+                <ProductCard product={product} />
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -262,73 +239,6 @@ const Home = () => {
               </CardContent>
             </Card>
           ))}
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="bg-muted/20 dark:bg-muted/50 py-20">
-        <div className="container mx-auto px-20 text-center">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 animate-slide-up dark:text-white">
-            What Our Customers Say
-          </h2>
-          <p className="text-muted-foreground dark:text-muted-foreground/80 max-w-2xl mx-auto mb-12">
-            See why thousands of shoppers love MCorp
-          </p>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                name: "Lerato",
-                quote: "Amazing quality and super fast delivery!",
-              },
-              {
-                name: "Sipho",
-                quote: "I found everything I needed in one place.",
-              },
-              { name: "Nandi", quote: "Great service and amazing products." },
-            ].map((testimonial, i) => {
-              const initials = testimonial.name
-                .split(" ")
-                .map((n) => n[0])
-                .join("");
-              return (
-                <Card
-                  key={i}
-                  className="p-6 hover:shadow-lg transition-shadow animate-fade-in flex flex-col items-center"
-                >
-                  <div className="h-12 w-12 rounded-full bg-accent/10 flex items-center justify-center mb-4 text-lg font-bold text-accent dark:text-accent">
-                    {initials}
-                  </div>
-                  <p className="text-muted-foreground dark:text-muted-foreground/80 mb-4 text-center">
-                    "{testimonial.quote}"
-                  </p>
-                  <h4 className="font-semibold dark:text-white">
-                    {testimonial.name}
-                  </h4>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Newsletter / Signup */}
-      <section className="bg-muted/10 dark:bg-muted/30 py-20 text-center">
-        <h2 className="text-3xl font-heading font-bold mb-4 animate-slide-up dark:text-white">
-          Stay Updated
-        </h2>
-        <p className="text-muted-foreground dark:text-muted-foreground/80 max-w-xl mx-auto mb-6 animate-slide-up">
-          Subscribe to our newsletter for new arrivals, exclusive deals, and
-          more.
-        </p>
-        <div className="flex flex-col sm:flex-row justify-center gap-4 max-w-xl mx-auto">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            className="p-3 rounded-lg border border-border/50 dark:border-border/30 w-full sm:w-auto flex-1 bg-background dark:bg-background/70 text-foreground dark:text-white"
-          />
-          <Button size="lg" variant="accent">
-            Subscribe
-          </Button>
         </div>
       </section>
     </div>
