@@ -1,12 +1,15 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart, Menu } from "lucide-react";
+import { ShoppingCart, Menu, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useTheme } from "next-themes";
+import { NavLink } from "./NavLink";
 
 const Navbar = () => {
   const { getCartCount } = useCart();
   const cartCount = getCartCount();
+  const { theme, setTheme } = useTheme();
 
   const navLinks = [
     { to: "/", label: "Home" },
@@ -25,24 +28,35 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
-              <Link
+              <NavLink
                 key={link.to}
                 to={link.to}
                 className="text-sm font-medium transition-colors hover:text-accent"
+                activeClassName="text-accent"
               >
                 {link.label}
-              </Link>
+              </NavLink>
             ))}
-            <Link to="/about" className="text-sm font-medium transition-colors hover:text-accent">
+            <NavLink to="/about" className="text-sm font-medium transition-colors hover:text-accent" activeClassName="text-accent">
               About
-            </Link>
-            <Link to="/contact" className="text-sm font-medium transition-colors hover:text-accent">
+            </NavLink>
+            <NavLink to="/contact" className="text-sm font-medium transition-colors hover:text-accent" activeClassName="text-accent">
               Contact
-            </Link>
+            </NavLink>
           </div>
 
-          {/* Cart & Mobile Menu */}
+          {/* Cart, Theme Toggle & Mobile Menu */}
           <div className="flex items-center space-x-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            >
+              <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <span className="sr-only">Toggle theme</span>
+            </Button>
+            
             <Link to="/cart">
               <Button variant="ghost" size="icon" className="relative">
                 <ShoppingCart className="h-5 w-5" />
@@ -64,20 +78,21 @@ const Navbar = () => {
               <SheetContent side="right" className="w-[240px]">
                 <div className="flex flex-col space-y-4 mt-8">
                   {navLinks.map((link) => (
-                    <Link
+                    <NavLink
                       key={link.to}
                       to={link.to}
                       className="text-lg font-medium transition-colors hover:text-accent"
+                      activeClassName="text-accent"
                     >
                       {link.label}
-                    </Link>
+                    </NavLink>
                   ))}
-                  <Link to="/about" className="text-lg font-medium transition-colors hover:text-accent">
+                  <NavLink to="/about" className="text-lg font-medium transition-colors hover:text-accent" activeClassName="text-accent">
                     About
-                  </Link>
-                  <Link to="/contact" className="text-lg font-medium transition-colors hover:text-accent">
+                  </NavLink>
+                  <NavLink to="/contact" className="text-lg font-medium transition-colors hover:text-accent" activeClassName="text-accent">
                     Contact
-                  </Link>
+                  </NavLink>
                 </div>
               </SheetContent>
             </Sheet>
