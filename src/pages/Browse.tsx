@@ -34,13 +34,13 @@ const Browse = () => {
     <div className="min-h-screen py-12">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-8 animate-slide-up">
           <h1 className="text-4xl font-heading font-bold mb-2">Shop All</h1>
           <p className="text-muted-foreground">Discover our full collection</p>
         </div>
 
         {/* Filters */}
-        <div className="mb-8 space-y-4">
+        <div className="mb-8 space-y-4 animate-fade-in">
           {/* Search */}
           <div className="relative max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -49,18 +49,20 @@ const Browse = () => {
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
+              className="pl-10 transition-all duration-300 focus:scale-[1.02]"
             />
           </div>
 
           {/* Categories */}
           <div className="flex flex-wrap gap-2">
-            {CATEGORIES.map((category) => (
+            {CATEGORIES.map((category, index) => (
               <Button
                 key={category}
                 variant={categoryParam === category ? "accent" : "outline"}
                 onClick={() => handleCategoryChange(category)}
                 size="sm"
+                className="animate-scale-in transition-all duration-300 hover:scale-105"
+                style={{ animationDelay: `${index * 0.05}s` }}
               >
                 {category}
               </Button>
@@ -69,7 +71,7 @@ const Browse = () => {
         </div>
 
         {/* Results */}
-        <div className="mb-4">
+        <div className="mb-4 animate-fade-in">
           <p className="text-sm text-muted-foreground">
             Showing {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"}
           </p>
@@ -78,16 +80,22 @@ const Browse = () => {
         {/* Product Grid */}
         {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            {filteredProducts.map((product, index) => (
+              <div 
+                key={product.id} 
+                className="animate-scale-in"
+                style={{ animationDelay: `${index * 0.05}s` }}
+              >
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
         ) : (
-          <div className="text-center py-20">
+          <div className="text-center py-20 animate-fade-in">
             <p className="text-muted-foreground text-lg">No products found</p>
             <Button
               variant="accent"
-              className="mt-4"
+              className="mt-4 transition-all duration-300 hover:scale-105"
               onClick={() => {
                 setSearchQuery("");
                 handleCategoryChange("All");
