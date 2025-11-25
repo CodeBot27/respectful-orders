@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { products } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Award, Truck, Shield, Headphones } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 
 const Home = () => {
   const featuredProducts = products.filter((p) => p.featured);
@@ -108,6 +109,50 @@ const Home = () => {
               </Link>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us */}
+      <section className="container mx-auto px-4 py-20">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Why Choose RESPECT</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            We're committed to delivering excellence in every aspect of your shopping experience
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            {
+              icon: Award,
+              title: "Premium Quality",
+              description: "Only the finest materials and craftsmanship in every piece",
+            },
+            {
+              icon: Truck,
+              title: "Fast Delivery",
+              description: "Quick and reliable shipping across South Africa",
+            },
+            {
+              icon: Shield,
+              title: "Secure Shopping",
+              description: "Your privacy and security are our top priority",
+            },
+            {
+              icon: Headphones,
+              title: "24/7 Support",
+              description: "We're always here to help via email or WhatsApp",
+            },
+          ].map((feature) => (
+            <Card key={feature.title} className="border-border/50 hover:border-accent/50 transition-colors">
+              <CardContent className="pt-6 text-center">
+                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-accent/10">
+                  <feature.icon className="h-6 w-6 text-accent" />
+                </div>
+                <h3 className="font-heading font-semibold text-lg mb-2">{feature.title}</h3>
+                <p className="text-sm text-muted-foreground">{feature.description}</p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </section>
     </div>
