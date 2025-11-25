@@ -93,14 +93,30 @@ All colors MUST be HSL.
 @layer base {
   * {
     @apply border-border;
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
   }
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading font-bold;
+  }
+  
+  /* Smooth theme transitions */
+  html {
+    transition: background-color 0.3s ease;
+  }
+  
+  /* View Transitions API for smooth theme switching */
+  @supports (view-transition-name: none) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 0.5s;
+      animation-timing-function: ease-in-out;
+    }
   }
 }
 
