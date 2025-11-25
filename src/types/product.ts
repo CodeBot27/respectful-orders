@@ -7,6 +7,7 @@ export interface Product {
   images: string[];
   inStock: boolean;
   featured?: boolean;
+  bestSeller?: boolean;
 }
 
 export interface CartItem extends Product {

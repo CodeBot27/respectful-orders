@@ -2,11 +2,32 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { products } from "@/data/products";
 import ProductCard from "@/components/ProductCard";
+import useEmblaCarousel from "embla-carousel-react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Award, Truck, Shield, Headphones } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const Home = () => {
   const featuredProducts = products.filter((p) => p.featured);
+  const bestSellers = products.filter((p) => p.bestSeller); // Make sure your products data has `bestSeller: true` for some items
+
+  const [emblaRef, embla] = useEmblaCarousel({ loop: true });
+  const autoplayTimer = useRef<number | null>(null);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (!embla) return;
+    const play = () => embla.scrollNext();
+    if (!paused) {
+      autoplayTimer.current = window.setInterval(play, 2800);
+    }
+    return () => {
+      if (autoplayTimer.current) {
+        clearInterval(autoplayTimer.current);
+        autoplayTimer.current = null;
+      }
+    };
+  }, [embla, paused]);
 
   return (
     <div className="min-h-screen">
@@ -23,10 +44,10 @@ const Home = () => {
         </div>
 
         <div className="relative z-10 text-center space-y-6 px-4 animate-fade-in">
-          <h1 className="text-5xl md:text-7xl font-heading font-bold text-white">
-            Miller's Corp
+          <h1 className="text-5xl md:text-7xl font-heading font-bold text-white dark:text-white">
+            MCorp
           </h1>
-          <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl text-white/90 dark:text-white/80 max-w-2xl mx-auto">
             Your one-stop destination for clothing, accessories, toys, home
             essentials, and more
           </p>
@@ -41,7 +62,7 @@ const Home = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="text-base bg-background/10 backdrop-blur-sm border-white/20 text-white hover:bg-background/20"
+                className="text-base bg-background/10 backdrop-blur-sm border-white/20 text-white dark:text-white hover:bg-background/20"
               >
                 New Collection
               </Button>
@@ -50,13 +71,21 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Promo Banner */}
+      <section className="bg-accent text-white dark:bg-accent/90 py-6 text-center animate-fade-in">
+        <p className="text-lg md:text-xl font-semibold">
+          Free delivery on orders over R500! | Check out our new arrivals and
+          exclusive deals
+        </p>
+      </section>
+
       {/* Featured Products */}
       <section className="container mx-auto px-20 py-20">
         <div className="text-center mb-12 animate-slide-up">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 dark:text-white">
             Featured Products
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-muted-foreground dark:text-muted-foreground/80 max-w-2xl mx-auto">
             Discover our most popular pieces, handpicked for the season
           </p>
         </div>
@@ -80,14 +109,63 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Best Sellers */}
+      <section className="container mx-auto px-20 py-20">
+        <div className="text-center mb-12 animate-slide-up">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 dark:text-white">
+            Best Sellers
+          </h2>
+          <p className="text-muted-foreground dark:text-muted-foreground/80 max-w-2xl mx-auto">
+            Our top-selling items loved by customers across South Africa
+          </p>
+        </div>
+        {/* Embla carousel */}
+        <div className="embla">
+          <div
+            ref={emblaRef}
+            className="embla__viewport overflow-hidden"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+          >
+            <div className="embla__container flex gap-4">
+              {bestSellers.map((product, index) => (
+                <div
+                  key={product.id}
+                  className="embla__slide flex-none w-[240px] sm:w-[280px] md:w-[300px] animate-scale-in"
+                  style={{ animationDelay: `${index * 0.06}s` }}
+                >
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center justify-center gap-4 mt-6">
+            <button
+              onClick={() => embla && embla.scrollPrev()}
+              className="px-3 py-2 bg-background/80 rounded-md hover:bg-background/90"
+              aria-label="Previous"
+            >
+              ‹
+            </button>
+            <button
+              onClick={() => embla && embla.scrollNext()}
+              className="px-3 py-2 bg-background/80 rounded-md hover:bg-background/90"
+              aria-label="Next"
+            >
+              ›
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Categories */}
-      <section className="bg-muted/30 py-20 transition-colors duration-300">
+      <section className="bg-muted/30 dark:bg-muted/50 py-20 transition-colors duration-300">
         <div className="container mx-auto px-20">
           <div className="text-center mb-12 animate-slide-up">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 dark:text-white">
               Shop by Category
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground dark:text-muted-foreground/80">
               Find what you're looking for
             </p>
           </div>
@@ -120,8 +198,8 @@ const Home = () => {
                   alt={category.name}
                   className="h-full w-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent flex items-end p-6 transition-all duration-300">
-                  <h3 className="text-2xl font-heading font-bold text-foreground transform transition-transform duration-300 group-hover:translate-y-[-4px]">
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 dark:from-background/90 to-transparent flex items-end p-6 transition-all duration-300">
+                  <h3 className="text-2xl font-heading font-bold text-foreground dark:text-white transform transition-transform duration-300 group-hover:translate-y-[-4px]">
                     {category.name}
                   </h3>
                 </div>
@@ -134,10 +212,10 @@ const Home = () => {
       {/* Why Choose Us */}
       <section className="container mx-auto px-20 py-20">
         <div className="text-center mb-12 animate-slide-up">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 dark:text-white">
             Why Choose MCorp
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-muted-foreground dark:text-muted-foreground/80 max-w-2xl mx-auto">
             We're committed to delivering excellence in every aspect of your
             shopping experience
           </p>
@@ -175,15 +253,82 @@ const Home = () => {
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-accent/10 transition-all duration-300 group-hover:scale-110">
                   <feature.icon className="h-6 w-6 text-accent transition-transform duration-300" />
                 </div>
-                <h3 className="font-heading font-semibold text-lg mb-2">
+                <h3 className="font-heading font-semibold text-lg mb-2 dark:text-white">
                   {feature.title}
                 </h3>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground dark:text-muted-foreground/80">
                   {feature.description}
                 </p>
               </CardContent>
             </Card>
           ))}
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="bg-muted/20 dark:bg-muted/50 py-20">
+        <div className="container mx-auto px-20 text-center">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 animate-slide-up dark:text-white">
+            What Our Customers Say
+          </h2>
+          <p className="text-muted-foreground dark:text-muted-foreground/80 max-w-2xl mx-auto mb-12">
+            See why thousands of shoppers love MCorp
+          </p>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                name: "Lerato",
+                quote: "Amazing quality and super fast delivery!",
+              },
+              {
+                name: "Sipho",
+                quote: "I found everything I needed in one place.",
+              },
+              { name: "Nandi", quote: "Great service and amazing products." },
+            ].map((testimonial, i) => {
+              const initials = testimonial.name
+                .split(" ")
+                .map((n) => n[0])
+                .join("");
+              return (
+                <Card
+                  key={i}
+                  className="p-6 hover:shadow-lg transition-shadow animate-fade-in flex flex-col items-center"
+                >
+                  <div className="h-12 w-12 rounded-full bg-accent/10 flex items-center justify-center mb-4 text-lg font-bold text-accent dark:text-accent">
+                    {initials}
+                  </div>
+                  <p className="text-muted-foreground dark:text-muted-foreground/80 mb-4 text-center">
+                    "{testimonial.quote}"
+                  </p>
+                  <h4 className="font-semibold dark:text-white">
+                    {testimonial.name}
+                  </h4>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter / Signup */}
+      <section className="bg-muted/10 dark:bg-muted/30 py-20 text-center">
+        <h2 className="text-3xl font-heading font-bold mb-4 animate-slide-up dark:text-white">
+          Stay Updated
+        </h2>
+        <p className="text-muted-foreground dark:text-muted-foreground/80 max-w-xl mx-auto mb-6 animate-slide-up">
+          Subscribe to our newsletter for new arrivals, exclusive deals, and
+          more.
+        </p>
+        <div className="flex flex-col sm:flex-row justify-center gap-4 max-w-xl mx-auto">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            className="p-3 rounded-lg border border-border/50 dark:border-border/30 w-full sm:w-auto flex-1 bg-background dark:bg-background/70 text-foreground dark:text-white"
+          />
+          <Button size="lg" variant="accent">
+            Subscribe
+          </Button>
         </div>
       </section>
     </div>

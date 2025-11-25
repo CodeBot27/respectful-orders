@@ -28,6 +28,7 @@ export const products: Product[] = [
     ],
     inStock: true,
     featured: true,
+    bestSeller: true,
   },
   {
     id: "3",
@@ -53,6 +54,7 @@ export const products: Product[] = [
       "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=800&h=800&fit=crop",
     ],
     inStock: true,
+    bestSeller: true,
   },
   {
     id: "5",
@@ -65,6 +67,7 @@ export const products: Product[] = [
       "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&h=800&fit=crop",
     ],
     inStock: true,
+    bestSeller: true,
   },
   {
     id: "6",
@@ -78,6 +81,7 @@ export const products: Product[] = [
     ],
     inStock: true,
     featured: true,
+    bestSeller: true,
   },
   {
     id: "7",
@@ -90,6 +94,7 @@ export const products: Product[] = [
       "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800&h=800&fit=crop",
     ],
     inStock: true,
+    bestSeller: true,
   },
   {
     id: "8",
@@ -113,6 +118,7 @@ export const products: Product[] = [
       "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?w=800&h=800&fit=crop",
     ],
     inStock: true,
+    bestSeller: true,
   },
   {
     id: "10",
