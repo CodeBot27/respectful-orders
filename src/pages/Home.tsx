@@ -24,10 +24,11 @@ const Home = () => {
 
         <div className="relative z-10 text-center space-y-6 px-4 animate-fade-in">
           <h1 className="text-5xl md:text-7xl font-heading font-bold text-white">
-            RESPECT
+            Miller's Corp
           </h1>
           <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto">
-            Premium streetwear for those who command respect
+            Your one-stop destination for clothing, accessories, toys, home
+            essentials, and more
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/browse">
@@ -37,7 +38,11 @@ const Home = () => {
               </Button>
             </Link>
             <Link to="/browse?category=Clothing">
-              <Button size="lg" variant="outline" className="text-base bg-background/10 backdrop-blur-sm border-white/20 text-white hover:bg-background/20">
+              <Button
+                size="lg"
+                variant="outline"
+                className="text-base bg-background/10 backdrop-blur-sm border-white/20 text-white hover:bg-background/20"
+              >
                 New Collection
               </Button>
             </Link>
@@ -46,17 +51,19 @@ const Home = () => {
       </section>
 
       {/* Featured Products */}
-      <section className="container mx-auto px-4 py-20">
+      <section className="container mx-auto px-20 py-20">
         <div className="text-center mb-12 animate-slide-up">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Featured Products</h2>
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+            Featured Products
+          </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Discover our most popular pieces, handpicked for the season
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {featuredProducts.map((product, index) => (
-            <div 
-              key={product.id} 
+            <div
+              key={product.id}
               className="animate-scale-in"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
@@ -75,24 +82,31 @@ const Home = () => {
 
       {/* Categories */}
       <section className="bg-muted/30 py-20 transition-colors duration-300">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-20">
           <div className="text-center mb-12 animate-slide-up">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Shop by Category</h2>
-            <p className="text-muted-foreground">Find what you're looking for</p>
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+              Shop by Category
+            </h2>
+            <p className="text-muted-foreground">
+              Find what you're looking for
+            </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
                 name: "Clothing",
-                image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=800&h=600&fit=crop",
+                image:
+                  "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=800&h=600&fit=crop",
               },
               {
                 name: "Accessories",
-                image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=800&h=600&fit=crop",
+                image:
+                  "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=800&h=600&fit=crop",
               },
               {
                 name: "Footwear",
-                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&h=600&fit=crop",
+                image:
+                  "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&h=600&fit=crop",
               },
             ].map((category, index) => (
               <Link
@@ -118,11 +132,14 @@ const Home = () => {
       </section>
 
       {/* Why Choose Us */}
-      <section className="container mx-auto px-4 py-20">
+      <section className="container mx-auto px-20 py-20">
         <div className="text-center mb-12 animate-slide-up">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Why Choose RESPECT</h2>
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+            Why Choose MCorp
+          </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            We're committed to delivering excellence in every aspect of your shopping experience
+            We're committed to delivering excellence in every aspect of your
+            shopping experience
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -130,7 +147,8 @@ const Home = () => {
             {
               icon: Award,
               title: "Premium Quality",
-              description: "Only the finest materials and craftsmanship in every piece",
+              description:
+                "Only the finest materials and craftsmanship in every piece",
             },
             {
               icon: Truck,
@@ -148,8 +166,8 @@ const Home = () => {
               description: "We're always here to help via email or WhatsApp",
             },
           ].map((feature, index) => (
-            <Card 
-              key={feature.title} 
+            <Card
+              key={feature.title}
               className="border-border/50 hover:border-accent/50 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 animate-fade-in"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
@@ -157,8 +175,12 @@ const Home = () => {
                 <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-accent/10 transition-all duration-300 group-hover:scale-110">
                   <feature.icon className="h-6 w-6 text-accent transition-transform duration-300" />
                 </div>
-                <h3 className="font-heading font-semibold text-lg mb-2">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground">{feature.description}</p>
+                <h3 className="font-heading font-semibold text-lg mb-2">
+                  {feature.title}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {feature.description}
+                </p>
               </CardContent>
             </Card>
           ))}

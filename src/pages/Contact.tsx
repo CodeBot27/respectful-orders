@@ -43,17 +43,17 @@ const Contact = () => {
     {
       icon: MapPin,
       title: "Visit Us",
-      details: ["123 Respect Street", "Braamfontein, Johannesburg", "2000, South Africa"],
+      details: ["22 Riviera Way", "Portlands, Mitchells Plain", "7785, Cape Town"],
     },
     {
       icon: Phone,
       title: "Call Us",
-      details: ["+27 11 123 4567", "Mon-Fri: 9am - 6pm", "Sat: 10am - 4pm"],
+      details: ["+27 84 740 3723", "Mon-Fri: 9am - 6pm", "Sat: 10am - 4pm"],
     },
     {
       icon: Mail,
       title: "Email Us",
-      details: ["info@respect.co.za", "support@respect.co.za", "We reply within 24 hours"],
+      details: ["milleraqeel97@gmail.com", "support@mcorp.co.za", "We reply within 24 hours"],
     },
   ];
 

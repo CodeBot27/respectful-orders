@@ -37,11 +37,7 @@ const ProductDetail = () => {
   return (
     <div className="min-h-screen py-12">
       <div className="container mx-auto px-4">
-        <Button
-          variant="ghost"
-          onClick={() => navigate(-1)}
-          className="mb-8"
-        >
+        <Button variant="ghost" onClick={() => navigate(-1)} className="mb-8">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back
         </Button>
@@ -49,7 +45,7 @@ const ProductDetail = () => {
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
           {/* Images */}
           <div className="space-y-4">
-            <div className="relative w-full max-w-lg mx-auto aspect-square overflow-hidden rounded-lg bg-muted">
+            <div className="relative w-full max-w-md mx-auto aspect-square overflow-hidden rounded-lg bg-muted">
               <img
                 src={product.images[selectedImage]}
                 alt={product.name}
@@ -64,7 +60,7 @@ const ProductDetail = () => {
               )}
             </div>
             {product.images.length > 1 && (
-              <div className="grid grid-cols-4 gap-4 max-w-lg mx-auto">
+              <div className="grid grid-cols-4 gap-4 max-w-md mx-auto">
                 {product.images.map((image, index) => (
                   <button
                     key={index}
@@ -75,7 +71,11 @@ const ProductDetail = () => {
                         : "border-transparent hover:border-muted-foreground/30"
                     }`}
                   >
-                    <img src={image} alt={`${product.name} ${index + 1}`} className="h-full w-full object-cover" />
+                    <img
+                      src={image}
+                      alt={`${product.name} ${index + 1}`}
+                      className="h-full w-full object-cover"
+                    />
                   </button>
                 ))}
               </div>
@@ -88,13 +88,19 @@ const ProductDetail = () => {
               <Badge variant="secondary" className="mb-4">
                 {product.category}
               </Badge>
-              <h1 className="text-3xl md:text-4xl font-heading font-bold mb-4">{product.name}</h1>
-              <p className="text-3xl font-bold text-accent">R {product.price.toFixed(2)}</p>
+              <h1 className="text-3xl md:text-4xl font-heading font-bold mb-4">
+                {product.name}
+              </h1>
+              <p className="text-3xl font-bold text-accent">
+                R {product.price.toFixed(2)}
+              </p>
             </div>
 
             <Card className="p-6 bg-muted/50">
               <h3 className="font-semibold mb-2">Description</h3>
-              <p className="text-muted-foreground leading-relaxed">{product.description}</p>
+              <p className="text-muted-foreground leading-relaxed">
+                {product.description}
+              </p>
             </Card>
 
             <div className="space-y-4">
