@@ -23,10 +23,10 @@ const Home = () => {
         </div>
 
         <div className="relative z-10 text-center space-y-6 px-4 animate-fade-in">
-          <h1 className="text-5xl md:text-7xl font-heading font-bold text-primary-foreground">
+          <h1 className="text-5xl md:text-7xl font-heading font-bold text-white">
             RESPECT
           </h1>
-          <p className="text-xl md:text-2xl text-primary-foreground/90 max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto">
             Premium streetwear for those who command respect
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -37,7 +37,7 @@ const Home = () => {
               </Button>
             </Link>
             <Link to="/browse?category=Clothing">
-              <Button size="lg" variant="outline" className="text-base bg-background/10 backdrop-blur-sm border-primary-foreground/20 text-primary-foreground hover:bg-background/20">
+              <Button size="lg" variant="outline" className="text-base bg-background/10 backdrop-blur-sm border-white/20 text-white hover:bg-background/20">
                 New Collection
               </Button>
             </Link>
