@@ -51,9 +51,9 @@ const Home = () => {
 
         <div className="relative z-10 text-center space-y-8 px-4 max-w-5xl mx-auto">
           <div className="animate-fade-in">
-            <div className="inline-block mb-4 px-4 py-2 bg-accent/20 backdrop-blur-sm rounded-full border border-accent/30">
+            {/* <div className="inline-block mb-4 px-4 py-2 bg-accent/20 backdrop-blur-sm rounded-full border border-accent/30">
               <p className="text-sm md:text-base text-white font-medium">✨ Welcome to MCorp - Where Style Meets Quality</p>
-            </div>
+            </div> */}
           </div>
           
           <h1 className="text-6xl md:text-8xl font-heading font-bold text-white animate-slide-up leading-tight">

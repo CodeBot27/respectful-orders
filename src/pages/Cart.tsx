@@ -16,7 +16,7 @@ const Cart = () => {
           <h2 className="text-2xl font-bold">Your cart is empty</h2>
           <p className="text-muted-foreground">Add some products to get started</p>
           <Link to="/browse">
-            <Button variant="accent" size="lg">
+            <Button className="mt-4" variant="accent" size="lg">
               Browse Products
             </Button>
           </Link>
