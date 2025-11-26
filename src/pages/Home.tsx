@@ -37,7 +37,8 @@ const Home = () => {
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage:
-              "url('https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1920&h=1080&fit=crop')",
+              "url('https://img.pikbest.com/wp/202347/online-shopping-cart-icon-3d-modern-on-a-blue-background-representation-of-or-buy-now_9746434.jpg!sw800')",
+              // https://png.pngtree.com/thumb_back/fh260/background/20230526/pngtree-mobile-phone-with-a-shopping-cart-on-it-image_2649649.jpg
           }}
         >
           <div className="absolute inset-0 gradient-hero" />
