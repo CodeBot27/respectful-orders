@@ -117,13 +117,14 @@ const Contact = () => {
                 />
               </div>
               <div>
-                <Label htmlFor="subject">Subject</Label>
+                <Label htmlFor="subject">Subject *</Label>
                 <Input
                   id="subject"
                   name="subject"
                   value={formData.subject}
                   onChange={handleInputChange}
                   placeholder="How can we help?"
+                  required
                 />
               </div>
               <div>

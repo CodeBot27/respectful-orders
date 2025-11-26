@@ -276,23 +276,23 @@ const Home = () => {
               {
                 name: "Uzair Davids",
                 role: "Cape Town",
-                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
+                avatar: "https://t4.ftcdn.net/jpg/06/08/55/73/360_F_608557356_ELcD2pwQO9pduTRL30umabzgJoQn5fnd.jpg",
                 rating: 5,
                 text: "Amazing quality and fast delivery! The clothing fits perfectly and the material is top-notch. MCorp is now my go-to for all my fashion needs.",
               },
               {
                 name: "Dylan Ronaldo",
                 role: "Cape Town",
-                avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
+                avatar: "https://images.stockcake.com/public/d/6/9/d69d248b-b9e6-4288-871d-e6d8e5ecf052_large/stylish-male-profile-stockcake.jpg",
                 rating: 5,
                 text: "I'm impressed with the attention to detail and customer service. Every purchase has exceeded my expectations. Highly recommend MCorp!",
               },
               {
                 name: "Diego Forlan",
                 role: "Cape Town",
-                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop",
+                avatar: "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                 rating: 5,
-                text: "Best online shopping experience in SA! The variety is incredible and the prices are fair. Love supporting a brand that understands our style.",
+                text: "Best online shopping experience in Cape Town! The variety is incredible and the prices are fair. Love supporting a brand that understands our style.",
               },
             ].map((testimonial, index) => (
               <Card

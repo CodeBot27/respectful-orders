@@ -128,13 +128,13 @@ const About = () => {
           </p>
           <div className="flex flex-wrap justify-center gap-8 text-center">
             <div>
-              <div className="text-3xl font-bold text-accent mb-1">10K+</div>
+              <div className="text-3xl font-bold text-accent mb-1">500+</div>
               <div className="text-sm text-muted-foreground">
                 Happy Customers
               </div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-accent mb-1">500+</div>
+              <div className="text-3xl font-bold text-accent mb-1">1000+</div>
               <div className="text-sm text-muted-foreground">Products Sold</div>
             </div>
             <div>
