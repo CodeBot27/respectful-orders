@@ -32,7 +32,7 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[70vh] md:h-[80vh] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[85vh] md:h-[90vh] flex items-center justify-center overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -43,17 +43,33 @@ const Home = () => {
           <div className="absolute inset-0 gradient-hero" />
         </div>
 
-        <div className="relative z-10 text-center space-y-6 px-4 animate-fade-in">
-          <h1 className="text-5xl md:text-7xl font-heading font-bold text-white dark:text-white">
-            MCorp
+        {/* Floating decorative elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-accent/10 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        </div>
+
+        <div className="relative z-10 text-center space-y-8 px-4 max-w-5xl mx-auto">
+          <div className="animate-fade-in">
+            <div className="inline-block mb-4 px-4 py-2 bg-accent/20 backdrop-blur-sm rounded-full border border-accent/30">
+              <p className="text-sm md:text-base text-white font-medium">✨ Welcome to MCorp - Where Style Meets Quality</p>
+            </div>
+          </div>
+          
+          <h1 className="text-6xl md:text-8xl font-heading font-bold text-white animate-slide-up leading-tight">
+            Elevate Your
+            <span className="block bg-gradient-to-r from-accent to-white bg-clip-text text-transparent">
+              Lifestyle
+            </span>
           </h1>
-          <p className="text-xl md:text-2xl text-white/90 dark:text-white/80 max-w-2xl mx-auto">
-            Your one-stop destination for clothing, accessories, toys, home
-            essentials, and more
+          
+          <p className="text-lg md:text-2xl text-white/90 max-w-3xl mx-auto animate-fade-in leading-relaxed" style={{ animationDelay: '0.2s' }}>
+            Discover premium clothing, accessories, and essentials curated for the modern South African lifestyle
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-scale-in" style={{ animationDelay: '0.4s' }}>
             <Link to="/browse">
-              <Button size="lg" variant="accent" className="text-base">
+              <Button size="lg" variant="accent" className="text-base px-8 py-6 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
                 Shop Now
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
@@ -62,11 +78,27 @@ const Home = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="text-base bg-background/10 backdrop-blur-sm border-white/20 text-white dark:text-white hover:bg-background/20"
+                className="text-base px-8 py-6 bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 shadow-xl transition-all duration-300 hover:scale-105"
               >
                 New Collection
               </Button>
             </Link>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.6s' }}>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-white mb-1">1000+</div>
+              <div className="text-sm text-white/70">Products</div>
+            </div>
+            <div className="text-center border-x border-white/20">
+              <div className="text-3xl md:text-4xl font-bold text-white mb-1">50K+</div>
+              <div className="text-sm text-white/70">Happy Customers</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-white mb-1">4.9★</div>
+              <div className="text-sm text-white/70">Average Rating</div>
+            </div>
           </div>
         </div>
       </section>
@@ -239,6 +271,80 @@ const Home = () => {
               </CardContent>
             </Card>
           ))}
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="bg-muted/30 dark:bg-muted/50 py-20 transition-colors duration-300">
+        <div className="container mx-auto px-20">
+          <div className="text-center mb-12 animate-slide-up">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4 dark:text-white">
+              What Our Customers Say
+            </h2>
+            <p className="text-muted-foreground dark:text-muted-foreground/80 max-w-2xl mx-auto">
+              Join thousands of happy customers across South Africa
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Thabo Mokwena",
+                role: "Johannesburg",
+                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
+                rating: 5,
+                text: "Amazing quality and fast delivery! The clothing fits perfectly and the material is top-notch. MCorp is now my go-to for all my fashion needs.",
+              },
+              {
+                name: "Lerato Nkosi",
+                role: "Cape Town",
+                avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
+                rating: 5,
+                text: "I'm impressed with the attention to detail and customer service. Every purchase has exceeded my expectations. Highly recommend MCorp!",
+              },
+              {
+                name: "Sipho Dlamini",
+                role: "Durban",
+                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop",
+                rating: 5,
+                text: "Best online shopping experience in SA! The variety is incredible and the prices are fair. Love supporting a brand that understands our style.",
+              },
+            ].map((testimonial, index) => (
+              <Card
+                key={testimonial.name}
+                className="border-border/50 hover:border-accent/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 animate-scale-in"
+                style={{ animationDelay: `${index * 0.15}s` }}
+              >
+                <CardContent className="pt-6">
+                  <div className="flex items-center gap-4 mb-4">
+                    <img
+                      src={testimonial.avatar}
+                      alt={testimonial.name}
+                      className="w-16 h-16 rounded-full object-cover border-2 border-accent/20"
+                    />
+                    <div>
+                      <h4 className="font-heading font-semibold text-lg dark:text-white">
+                        {testimonial.name}
+                      </h4>
+                      <p className="text-sm text-muted-foreground dark:text-muted-foreground/80">
+                        {testimonial.role}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <span key={i} className="text-accent text-lg">★</span>
+                    ))}
+                  </div>
+                  
+                  <p className="text-muted-foreground dark:text-muted-foreground/80 leading-relaxed">
+                    "{testimonial.text}"
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
     </div>
