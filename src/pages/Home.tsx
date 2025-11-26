@@ -88,27 +88,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-12 bg-background dark:bg-background">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto animate-fade-in">
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-foreground mb-1">1000+</div>
-              <div className="text-sm text-muted-foreground">Products</div>
-            </div>
-            <div className="text-center border-x border-border/50">
-              <div className="text-3xl md:text-4xl font-bold text-foreground mb-1">50K+</div>
-              <div className="text-sm text-muted-foreground">Happy Customers</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-foreground mb-1">4.9★</div>
-              <div className="text-sm text-muted-foreground">Average Rating</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Promo Banner */}
+            {/* Promo Banner */}
       <section className="bg-accent text-white dark:bg-accent/90 py-6 text-center animate-fade-in">
         <p className="text-lg md:text-xl font-semibold">
           Free delivery on orders over R500! | Check out our new arrivals and
@@ -294,22 +274,22 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                name: "Thabo Mokwena",
-                role: "Johannesburg",
+                name: "Uzair Davids",
+                role: "Cape Town",
                 avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop",
                 rating: 5,
                 text: "Amazing quality and fast delivery! The clothing fits perfectly and the material is top-notch. MCorp is now my go-to for all my fashion needs.",
               },
               {
-                name: "Lerato Nkosi",
+                name: "Dylan Ronaldo",
                 role: "Cape Town",
                 avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop",
                 rating: 5,
                 text: "I'm impressed with the attention to detail and customer service. Every purchase has exceeded my expectations. Highly recommend MCorp!",
               },
               {
-                name: "Sipho Dlamini",
-                role: "Durban",
+                name: "Diego Forlan",
+                role: "Cape Town",
                 avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop",
                 rating: 5,
                 text: "Best online shopping experience in SA! The variety is incredible and the prices are fair. Love supporting a brand that understands our style.",
