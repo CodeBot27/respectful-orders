@@ -50,22 +50,6 @@ const Home = () => {
         </div>
 
         <div className="relative z-10 text-center space-y-8 px-4 max-w-5xl mx-auto">
-          {/* Stats - moved to top for mobile */}
-          <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto animate-fade-in mb-8">
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-white mb-1">1000+</div>
-              <div className="text-sm text-white/70">Products</div>
-            </div>
-            <div className="text-center border-x border-white/20">
-              <div className="text-3xl md:text-4xl font-bold text-white mb-1">50K+</div>
-              <div className="text-sm text-white/70">Happy Customers</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-white mb-1">4.9★</div>
-              <div className="text-sm text-white/70">Average Rating</div>
-            </div>
-          </div>
-
           <div className="animate-fade-in">
             {/* <div className="inline-block mb-4 px-4 py-2 bg-accent/20 backdrop-blur-sm rounded-full border border-accent/30">
               <p className="text-sm md:text-base text-white font-medium">✨ Welcome to MCorp - Where Style Meets Quality</p>
@@ -101,6 +85,26 @@ const Home = () => {
             </Link>
           </div>
 
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-12 bg-background dark:bg-background">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto animate-fade-in">
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-foreground mb-1">1000+</div>
+              <div className="text-sm text-muted-foreground">Products</div>
+            </div>
+            <div className="text-center border-x border-border/50">
+              <div className="text-3xl md:text-4xl font-bold text-foreground mb-1">50K+</div>
+              <div className="text-sm text-muted-foreground">Happy Customers</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl md:text-4xl font-bold text-foreground mb-1">4.9★</div>
+              <div className="text-sm text-muted-foreground">Average Rating</div>
+            </div>
+          </div>
         </div>
       </section>
 
