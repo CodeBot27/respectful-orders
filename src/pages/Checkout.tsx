@@ -128,7 +128,24 @@ const Checkout = () => {
         `\n\n*Total: R${total.toFixed(2)}*`
     );
 
-    const whatsappNumber = "0747862736"; // your business number
+    const formatPhoneToWhatsApp = (number: string) => {
+      // Remove all non-numeric characters
+      const digits = number.replace(/\D/g, "");
+
+      // If the user enters 0xxxxxxxxx → convert to 27xxxxxxxxx
+      if (digits.startsWith("0")) {
+        return "27" + digits.slice(1);
+      }
+
+      // If they already include +27, remove +
+      if (digits.startsWith("27")) {
+        return digits;
+      }
+
+      return digits; // fallback
+    };
+
+    const whatsappNumber = formatPhoneToWhatsApp("0747862736"); // South African number in full international format
     window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank");
 
     clearCart();
