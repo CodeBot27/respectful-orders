@@ -1,20 +1,100 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { products } from "@/data/products";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ShoppingCart } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { supabase } from "@/lib/supabase";
 
 const ProductDetail = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // UUID from route
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [selectedImage, setSelectedImage] = useState(0);
 
-  const product = products.find((p) => p.id === id);
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  // --------------------------
+  // FETCH PRODUCT FROM SUPABASE
+  // --------------------------
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+
+      const { data, error } = await supabase
+        .from("products")
+        .select(
+          `
+          id,
+          name,
+          price,
+          short_description,
+          long_description,
+          in_stock,
+          featured,
+          best_seller,
+          category_id,
+          categories(name),
+          product_images(path, position)
+        `
+        )
+        .eq("id", id)
+        .single();
+
+      if (error || !data) {
+        console.error("Product not found", error);
+        setProduct(null);
+        setLoading(false);
+        return;
+      }
+
+      // Format data to match your UI
+      const formatted = {
+        id: data.id,
+        name: data.name,
+        price: data.price,
+        category: data.categories?.[0]?.name || "",
+        categoryId: data.category_id,
+        description: data.short_description || data.long_description || "",
+        images:
+          data.product_images
+            ?.sort((a, b) => a.position - b.position)
+            .map((img) => img.path) || [],
+        inStock: data.in_stock,
+        featured: data.featured,
+        bestSeller: data.best_seller,
+      };
+
+      setProduct(formatted);
+      setLoading(false);
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  // --------------------------
+  // HANDLE CART
+  // --------------------------
+  const handleAddToCart = () => {
+    if (product?.inStock) addToCart(product);
+  };
+
+  // --------------------------
+  // LOADING SCREEN
+  // --------------------------
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-lg font-medium">Loading product...</p>
+      </div>
+    );
+  }
+
+  // --------------------------
+  // NOT FOUND SCREEN
+  // --------------------------
   if (!product) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -28,12 +108,9 @@ const ProductDetail = () => {
     );
   }
 
-  const handleAddToCart = () => {
-    if (product.inStock) {
-      addToCart(product);
-    }
-  };
-
+  // --------------------------
+  // MAIN PRODUCT PAGE
+  // --------------------------
   return (
     <div className="min-h-screen py-12">
       <div className="container mx-auto px-4">
@@ -51,6 +128,7 @@ const ProductDetail = () => {
                 alt={product.name}
                 className="h-full w-full object-cover"
               />
+
               {!product.inStock && (
                 <div className="absolute inset-0 bg-background/80 flex items-center justify-center">
                   <Badge variant="secondary" className="text-lg px-6 py-2">
@@ -59,6 +137,7 @@ const ProductDetail = () => {
                 </div>
               )}
             </div>
+
             {product.images.length > 1 && (
               <div className="grid grid-cols-4 gap-4 max-w-md mx-auto">
                 {product.images.map((image, index) => (
@@ -88,9 +167,11 @@ const ProductDetail = () => {
               <Badge variant="secondary" className="mb-4">
                 {product.category}
               </Badge>
+
               <h1 className="text-3xl md:text-4xl font-heading font-bold mb-4">
                 {product.name}
               </h1>
+
               <p className="text-3xl font-bold text-accent">
                 R {product.price.toFixed(2)}
               </p>

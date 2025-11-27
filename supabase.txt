@@ -1,0 +1,407 @@
+password: FXhrlZ1rEEpi1z6F
+
+schema
+
+
+
+-- 1) Extensions (optional)
+create extension if not exists "uuid-ossp";
+
+-- 2) categories (small lookup table)
+create table if not exists categories (
+  id serial primary key,
+  name text not null unique
+);
+
+-- 3) products
+create table if not exists products (
+  id uuid primary key default uuid_generate_v4(),
+  sku text unique,                    -- optional SKU from your system
+  name text not null,
+  price integer not null,             -- store cents or integer price (Rands) as you prefer
+  category_id integer references categories(id) on delete set null,
+  short_description text,
+  long_description text,
+  in_stock boolean not null default true,
+  featured boolean default false,
+  best_seller boolean default false,
+  metadata jsonb default '{}'::jsonb, -- flexible place for sizes, color, specs
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- 4) product_images (so each product can have many images, ordered)
+create table if not exists product_images (
+  id uuid primary key default uuid_generate_v4(),
+  product_id uuid references products(id) on delete cascade,
+  path text not null,         -- path/URL in Supabase Storage or CDN
+  alt_text text,
+  position integer default 0,
+  created_at timestamptz default now()
+);
+
+-- 5) customers (optional - you can also store customer details inside orders)
+create table if not exists customers (
+  id uuid primary key default uuid_generate_v4(),
+  name text not null,
+  phone text,
+  email text,
+  address text,
+  created_at timestamptz default now()
+);
+
+-- 6) orders
+create table if not exists orders (
+  id uuid primary key default uuid_generate_v4(),
+  customer_id uuid references customers(id) on delete set null,
+  customer_snapshot jsonb not null,   -- save a snapshot of name/phone/address at time of order
+  total integer not null,
+  channel text not null default 'email', -- 'email' or 'whatsapp' or 'phone'
+  notes text,
+  status text not null default 'pending', -- pending, fulfilled, cancelled
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- 7) order_items (line items)
+create table if not exists order_items (
+  id uuid primary key default uuid_generate_v4(),
+  order_id uuid references orders(id) on delete cascade,
+  product_id uuid references products(id),
+  product_snapshot jsonb not null,   -- name/price/sku at purchase
+  quantity integer not null default 1,
+  unit_price integer not null,
+  total_price integer not null
+);
+
+-- 8) basic indexes
+create index if not exists idx_products_category on products(category_id);
+create index if not exists idx_products_featured on products(featured);
+create index if not exists idx_products_best_seller on products(best_seller);
+
+-- inserting values and products
+INSERT INTO categories (name)
+VALUES 
+  ('Clothing'),
+  ('Accessories'),
+  ('Footwear'),
+  ('Lifestyle');
+
+-- product one
+WITH p AS (
+  INSERT INTO products (sku, name, price, category_id, short_description, long_description, in_stock, featured, best_seller)
+  VALUES (
+    'SKU-1',
+    'Respect Classic Hoodie',
+    899,
+    (SELECT id FROM categories WHERE name='Clothing'),
+    'Premium cotton hoodie.',
+    'Premium cotton blend hoodie with embroidered Respect logo. Oversized fit for ultimate comfort and street style.',
+    TRUE,
+    TRUE,
+    FALSE
+  )
+  RETURNING id
+)
+INSERT INTO product_images (product_id, path, alt_text, position)
+VALUES
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&h=800&fit=crop', 'Classic Hoodie', 1),
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800&h=800&fit=crop', 'Classic Hoodie 2', 2);
+
+
+-- 2
+WITH p AS (
+  INSERT INTO products (sku, name, price, category_id, short_description, long_description, in_stock, featured, best_seller)
+  VALUES (
+    'SKU-2',
+    'Respect Signature Tee',
+    349,
+    (SELECT id FROM categories WHERE name='Clothing'),
+    'Signature cotton tee.',
+    '100% organic cotton tee with bold Respect branding. Classic fit with premium screen printing.',
+    TRUE,
+    TRUE,
+    TRUE
+  )
+  RETURNING id
+)
+INSERT INTO product_images (product_id, path, alt_text, position)
+VALUES
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&h=800&fit=crop', 'Signature Tee', 1),
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&h=800&fit=crop', 'Signature Tee 2', 2);
+
+
+-- 3
+
+WITH p AS (
+  INSERT INTO products (sku, name, price, category_id, short_description, long_description, in_stock, featured, best_seller)
+  VALUES (
+    'SKU-3',
+    'Respect Cap - Black',
+    299,
+    (SELECT id FROM categories WHERE name='Accessories'),
+    'Black snapback cap.',
+    'Premium adjustable snapback cap with 3D embroidered logo. Structured fit with breathable fabric.',
+    TRUE,
+    TRUE,
+    FALSE
+  )
+  RETURNING id
+)
+INSERT INTO product_images (product_id, path, alt_text, position)
+VALUES
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&h=800&fit=crop', 'Cap Black', 1),
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1575428652377-a2d80e2277fc?w=800&h=800&fit=crop', 'Cap Black 2', 2);
+
+
+-- 4
+WITH p AS (
+  INSERT INTO products (sku, name, price, category_id, short_description, long_description, in_stock, featured, best_seller)
+  VALUES (
+    'SKU-4',
+    'Respect Track Pants',
+    749,
+    (SELECT id FROM categories WHERE name='Clothing'),
+    'Tapered track pants.',
+    'Tapered track pants with side stripe detail. Comfortable cotton-poly blend with elastic waistband.',
+    TRUE,
+    FALSE,
+    TRUE
+  )
+  RETURNING id
+)
+INSERT INTO product_images (product_id, path, alt_text, position)
+VALUES
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800&h=800&fit=crop', 'Track Pants', 1),
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=800&h=800&fit=crop', 'Track Pants 2', 2);
+
+
+
+-- 5
+WITH p AS (
+  INSERT INTO products (sku, name, price, category_id, short_description, long_description, in_stock, featured, best_seller)
+  VALUES (
+    'SKU-5',
+    'Respect Crossbody Bag',
+    599,
+    (SELECT id FROM categories WHERE name='Accessories'),
+    'Compact crossbody bag.',
+    'Compact crossbody bag with multiple compartments. Durable nylon with adjustable strap.',
+    TRUE,
+    FALSE,
+    TRUE
+  )
+  RETURNING id
+)
+INSERT INTO product_images (product_id, path, alt_text, position)
+VALUES
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=800&h=800&fit=crop', 'Crossbody Bag', 1),
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&h=800&fit=crop', 'Crossbody Bag 2', 2);
+
+
+
+-- 6
+WITH p AS (
+  INSERT INTO products (sku, name, price, category_id, short_description, long_description, in_stock, featured, best_seller)
+  VALUES (
+    'SKU-6',
+    'Respect Sneakers - White',
+    1299,
+    (SELECT id FROM categories WHERE name='Footwear'),
+    'Classic white sneakers.',
+    'Classic low-top sneakers with premium leather upper. Cushioned sole for all-day comfort.',
+    TRUE,
+    TRUE,
+    TRUE
+  )
+  RETURNING id
+)
+INSERT INTO product_images (product_id, path, alt_text, position)
+VALUES
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800&h=800&fit=crop', 'Sneakers White', 1),
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=800&h=800&fit=crop', 'Sneakers White 2', 2);
+
+
+
+-- 7
+WITH p AS (
+  INSERT INTO products (sku, name, price, category_id, short_description, long_description, in_stock, featured, best_seller)
+  VALUES (
+    'SKU-7',
+    'Respect Beanie',
+    249,
+    (SELECT id FROM categories WHERE name='Accessories'),
+    'Soft knit beanie.',
+    'Soft knit beanie with woven label. One size fits most. Perfect for cold weather.',
+    TRUE,
+    FALSE,
+    TRUE
+  )
+  RETURNING id
+)
+INSERT INTO product_images (product_id, path, alt_text, position)
+VALUES
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=800&h=800&fit=crop', 'Beanie', 1),
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800&h=800&fit=crop', 'Beanie 2', 2);
+
+
+
+-- 8
+WITH p AS (
+  INSERT INTO products (sku, name, price, category_id, short_description, long_description, in_stock, featured, best_seller)
+  VALUES (
+    'SKU-8',
+    'Respect Windbreaker',
+    1099,
+    (SELECT id FROM categories WHERE name='Clothing'),
+    'Lightweight windbreaker.',
+    'Lightweight windbreaker jacket with packable hood. Water-resistant with mesh lining.',
+    FALSE,
+    FALSE,
+    FALSE
+  )
+  RETURNING id
+)
+INSERT INTO product_images (product_id, path, alt_text, position)
+VALUES
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=800&h=800&fit=crop', 'Windbreaker', 1),
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&h=800&fit=crop', 'Windbreaker 2', 2);
+
+
+
+
+-- 9
+WITH p AS (
+  INSERT INTO products (sku, name, price, category_id, short_description, long_description, in_stock, featured, best_seller)
+  VALUES (
+    'SKU-9',
+    'Respect Socks - 3 Pack',
+    199,
+    (SELECT id FROM categories WHERE name='Accessories'),
+    '3-pack cotton socks.',
+    'Premium cotton crew socks with subtle Respect branding. Comfortable cushioned sole.',
+    TRUE,
+    FALSE,
+    FALSE
+  )
+  RETURNING id
+)
+INSERT INTO product_images (product_id, path, alt_text, position)
+VALUES
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?w=800&h=800&fit=crop', 'Socks 3 pack', 1);
+
+
+
+
+-- 10
+WITH p AS (
+  INSERT INTO products (sku, name, price, category_id, short_description, long_description, in_stock, featured, best_seller)
+  VALUES (
+    'SKU-10',
+    'Respect Slides',
+    499,
+    (SELECT id FROM categories WHERE name='Footwear'),
+    'Comfortable slides.',
+    'Comfortable slide sandals with molded footbed. Bold Respect branding on strap.',
+    TRUE,
+    FALSE,
+    FALSE
+  )
+  RETURNING id
+)
+INSERT INTO product_images (product_id, path, alt_text, position)
+VALUES
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1603487742131-4160ec999306?w=800&h=800&fit=crop', 'Slides', 1);
+
+
+
+-- 11
+WITH p AS (
+  INSERT INTO products (sku, name, price, category_id, short_description, long_description, in_stock, featured, best_seller)
+  VALUES (
+    'SKU-11',
+    'Respect Gym Shorts',
+    449,
+    (SELECT id FROM categories WHERE name='Clothing'),
+    'Lightweight gym shorts.',
+    'Athletic shorts with mesh lining and zip pockets. Lightweight and moisture-wicking.',
+    TRUE,
+    FALSE,
+    FALSE
+  )
+  RETURNING id
+)
+INSERT INTO product_images (product_id, path, alt_text, position)
+VALUES
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=800&h=800&fit=crop', 'Gym Shorts', 1);
+
+
+
+-- 12
+WITH p AS (
+  INSERT INTO products (sku, name, price, category_id, short_description, long_description, in_stock, featured, best_seller)
+  VALUES (
+    'SKU-12',
+    'Respect Water Bottle',
+    299,
+    (SELECT id FROM categories WHERE name='Lifestyle'),
+    'Insulated water bottle.',
+    'Stainless steel insulated water bottle. Keeps drinks cold for 24 hours. 750ml capacity.',
+    TRUE,
+    FALSE,
+    FALSE
+  )
+  RETURNING id
+)
+INSERT INTO product_images (product_id, path, alt_text, position)
+VALUES
+  ((SELECT id FROM p), 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&h=800&fit=crop', 'Water Bottle', 1);
+
+
+You can filter on:
+
+1) Category
+
+products.category_id
+
+join with categories for names
+
+eq('category_id', X)
+
+2) Price range
+
+gte('price', min)
+
+lte('price', max)
+
+3) Search
+
+name
+
+short_description
+
+long_description
+→ ilike('name', '%text%')
+
+4) In stock
+
+eq('in_stock', true)
+
+5) Best sellers
+
+eq('best_seller', true)
+
+6) Featured
+
+eq('featured', true)
+
+7) Metadata (sizes, colors, etc)
+
+If you add sizes:
+
+metadata->'size'
+→ .contains('metadata', { size: 'L' })
+
+8) Sorting
+
+.order('price', { ascending: true })
