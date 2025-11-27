@@ -23,7 +23,7 @@ const OrderSuccess = () => {
               <CheckCircle className="h-10 w-10 text-success" />
             </div>
             <h1 className="text-3xl md:text-4xl font-heading font-bold mb-2">Order Received!</h1>
-            <p className="text-muted-foreground">Thank you for choosing Respect</p>
+            <p className="text-muted-foreground">Thank you for choosing MCorp</p>
           </div>
 
           <Card className="p-6 bg-muted/30 mb-8">
@@ -34,7 +34,7 @@ const OrderSuccess = () => {
                   <span className="font-semibold text-lg">Order Sent via Email</span>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  We've received your order and sent you a confirmation email. Our team will contact you shortly to confirm payment and delivery details.
+                  We've received your order and sent you a confirmation email. Our team will contact you shortly to confirm payment and delivery/pickup details.
                 </p>
               </div>
             ) : (
@@ -44,7 +44,7 @@ const OrderSuccess = () => {
                   <span className="font-semibold text-lg">Order Sent via WhatsApp</span>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Your order has been sent to our WhatsApp Business. We'll respond shortly with payment instructions and delivery timeline.
+                  Your order has been sent to our WhatsApp Business. We'll respond shortly with payment instructions and delivery/pickup timeline.
                 </p>
               </div>
             )}
@@ -57,7 +57,7 @@ const OrderSuccess = () => {
                 <div className="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-xs font-bold text-accent">1</span>
                 </div>
-                <p>We'll review your order and confirm availability</p>
+                <p>We'll review your order and confirm availability within 24 hours</p>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -69,7 +69,7 @@ const OrderSuccess = () => {
                 <div className="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-xs font-bold text-accent">3</span>
                 </div>
-                <p>Once payment is confirmed, we'll process and ship your order</p>
+                <p>Once payment is confirmed, we'll process and ship your order or schedule a pickup</p>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-6 h-6 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0 mt-0.5">

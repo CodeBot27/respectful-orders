@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
 
 const Cart = () => {
@@ -43,15 +42,19 @@ const Cart = () => {
                       className="w-24 h-24 object-cover rounded-md"
                     />
                   </Link>
+
                   <div className="flex-1 min-w-0">
                     <Link to={`/product/${item.id}`}>
                       <h3 className="font-semibold hover:text-accent transition-colors mb-1">
                         {item.name}
                       </h3>
                     </Link>
+
                     <p className="text-sm text-muted-foreground mb-2">{item.category}</p>
+
                     <p className="font-bold text-accent">R {item.price.toFixed(2)}</p>
                   </div>
+
                   <div className="flex flex-col items-end justify-between">
                     <Button
                       variant="ghost"
@@ -61,6 +64,7 @@ const Cart = () => {
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
+
                     <div className="flex items-center gap-2">
                       <Button
                         variant="outline"
@@ -70,7 +74,9 @@ const Cart = () => {
                       >
                         <Minus className="h-3 w-3" />
                       </Button>
+
                       <span className="w-8 text-center font-medium">{item.quantity}</span>
+
                       <Button
                         variant="outline"
                         size="icon"
@@ -86,21 +92,24 @@ const Cart = () => {
             ))}
           </div>
 
-          {/* Order Summary */}
-          <div className="lg:col-span-1">
+          {/* Summary */}
+          <div>
             <Card className="p-6 sticky top-24">
               <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Subtotal</span>
                   <span className="font-medium">R {getCartTotal().toFixed(2)}</span>
                 </div>
+
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Shipping</span>
                   <span className="font-medium">
                     {getCartTotal() > 500 ? "FREE" : "R 50.00"}
                   </span>
                 </div>
+
                 <div className="border-t border-border pt-3">
                   <div className="flex justify-between">
                     <span className="font-semibold">Total</span>
@@ -110,11 +119,13 @@ const Cart = () => {
                   </div>
                 </div>
               </div>
+
               <Link to="/checkout">
                 <Button variant="accent" size="lg" className="w-full">
                   Proceed to Checkout
                 </Button>
               </Link>
+
               <Link to="/browse">
                 <Button variant="outline" size="lg" className="w-full mt-3">
                   Continue Shopping

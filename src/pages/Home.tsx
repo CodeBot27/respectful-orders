@@ -23,22 +23,21 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch products with categories and images
         const { data: productData, error: productError } = await supabase.from(
           "products"
         ).select(`
-        id,
-        name,
-        price,
-        short_description,
-        long_description,
-        in_stock,
-        featured,
-        best_seller,
-        category_id,
-        categories(name),
-        product_images(path)
-      `);
+            id,
+            name,
+            price,
+            short_description,
+            long_description,
+            in_stock,
+            featured,
+            best_seller,
+            category_id,
+            categories(name),
+            product_images(path)
+        `);
 
         if (productError) throw productError;
 
@@ -56,16 +55,13 @@ const Home = () => {
         }));
         setProducts(mappedProducts);
 
-        // Fetch categories and build category images from products
         const { data: categoryData, error: categoryError } = await supabase
           .from("categories")
           .select("id, name");
 
         if (categoryError) throw categoryError;
 
-        // Build category images by finding featured products for each category
         const categoriesWithImages = categoryData.map((category) => {
-          // Find featured products in this category
           const categoryProducts = mappedProducts.filter(
             (p) => p.categoryId === category.id
           );
@@ -82,14 +78,13 @@ const Home = () => {
         });
 
         setCategories(categoriesWithImages);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
         setLoading(false);
       }
     };
 
-    // Helper function for fallback images
     const getFallbackCategoryImage = (categoryName: string) => {
       const fallbackImages = {
         Clothing:
@@ -119,10 +114,20 @@ const Home = () => {
     };
   }, [embla, paused]);
 
-  if (loading)
-    return (
-      <div className="text-center py-20 text-xl font-semibold">Loading...</div>
-    );
+  const renderProductSkeleton = () => (
+    <div className="animate-pulse space-y-2">
+      <div className="bg-muted h-52 w-full rounded-md" />
+      <div className="h-4 w-3/4 bg-muted rounded" />
+      <div className="h-4 w-1/2 bg-muted rounded" />
+    </div>
+  );
+
+  const renderCategorySkeleton = () => (
+    <div className="animate-pulse h-64 bg-muted rounded-lg" />
+  );
+
+  const productsLoaded = !loading && featuredProducts.length > 0;
+  const categoriesLoaded = !loading && categories.length > 0;
 
   return (
     <div className="min-h-screen">
@@ -172,7 +177,7 @@ const Home = () => {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            {categories[0] && (
+            {categoriesLoaded && (
               <Link to={`/browse?category=${categories[0].name}`}>
                 <Button
                   size="lg"
@@ -198,15 +203,19 @@ const Home = () => {
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-          {featuredProducts.map((product, index) => (
-            <div
-              key={product.id}
-              className="animate-scale-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <ProductCard product={product} />
-            </div>
-          ))}
+          {loading
+            ? Array.from({ length: 4 }).map((_, i) => (
+                <div key={i}>{renderProductSkeleton()}</div>
+              ))
+            : featuredProducts.map((product, index) => (
+                <div
+                  key={product.id}
+                  className="animate-scale-in"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <ProductCard product={product} />
+                </div>
+              ))}
         </div>
         <div className="text-center mt-12">
           <Link to="/browse">
@@ -253,25 +262,29 @@ const Home = () => {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {categories.map((category, index) => (
-              <Link
-                key={category.id}
-                to={`/browse?category=${category.name}`}
-                className="group relative h-64 overflow-hidden rounded-lg animate-fade-in"
-                style={{ animationDelay: `${index * 0.15}s` }}
-              >
-                <img
-                  src={category.image}
-                  alt={category.name}
-                  className="h-full w-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 dark:from-background/90 to-transparent flex items-end p-6 transition-all duration-300">
-                  <h3 className="text-2xl font-heading font-bold text-foreground dark:text-white transform transition-transform duration-300 group-hover:translate-y-[-4px]">
-                    {category.name}
-                  </h3>
-                </div>
-              </Link>
-            ))}
+            {loading
+              ? Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i}>{renderCategorySkeleton()}</div>
+                ))
+              : categories.map((category, index) => (
+                  <Link
+                    key={category.id}
+                    to={`/browse?category=${category.name}`}
+                    className="group relative h-64 overflow-hidden rounded-lg animate-fade-in"
+                    style={{ animationDelay: `${index * 0.15}s` }}
+                  >
+                    <img
+                      src={category.image}
+                      alt={category.name}
+                      className="h-full w-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 dark:from-background/90 to-transparent flex items-end p-6 transition-all duration-300">
+                      <h3 className="text-2xl font-heading font-bold text-foreground dark:text-white transform transition-transform duration-300 group-hover:translate-y-[-4px]">
+                        {category.name}
+                      </h3>
+                    </div>
+                  </Link>
+                ))}
           </div>
         </div>
       </section>
@@ -332,7 +345,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Testimonials (still static) */}
+      {/* Testimonials */}
       <section className="bg-muted/30 dark:bg-muted/50 py-20 transition-colors duration-300">
         <div className="container mx-auto px-20">
           <div className="text-center mb-12 animate-slide-up">

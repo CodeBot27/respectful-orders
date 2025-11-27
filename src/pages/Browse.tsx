@@ -11,33 +11,26 @@ const Browse = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loadingProducts, setLoadingProducts] = useState(false);
 
-  // Active category from URL
   const categoryParam = searchParams.get("category") || "All";
 
-  // ---------------------------
-  // FETCH CATEGORIES (once)
-  // ---------------------------
+  // Fetch categories once
   useEffect(() => {
     const loadCategories = async () => {
       const { data, error } = await supabase
         .from("categories")
         .select("*")
         .order("name");
-
       if (!error) setCategories(data);
     };
-
     loadCategories();
   }, []);
 
-  // -----------------------------------------
-  // FETCH PRODUCTS with Supabase-side filters
-  // -----------------------------------------
+  // Fetch products when category or search changes
   useEffect(() => {
     const fetchProducts = async () => {
-      setLoading(true);
+      setLoadingProducts(true);
 
       let query = supabase.from("products").select(
         `
@@ -55,61 +48,53 @@ const Browse = () => {
       `
       );
 
-      // Filter: CATEGORY
+      // Category filter
       if (categoryParam !== "All") {
         const selected = categories.find(
           (c) => c.name.toLowerCase() === categoryParam.toLowerCase()
         );
-        if (selected) {
-          query = query.eq("category_id", selected.id);
-        }
+        if (selected) query = query.eq("category_id", selected.id);
       }
 
-      // Filter: SEARCH
+      // Search filter
       if (searchQuery.trim() !== "") {
         query = query.ilike("name", `%${searchQuery.trim()}%`);
       }
 
-      // Execute
       const { data, error } = await query.order("created_at", {
         ascending: false,
       });
 
-      if (error) {
+      if (!error) {
+        const mapped = data.map((p) => ({
+          id: p.id,
+          name: p.name,
+          price: p.price,
+          category: p.categories?.[0]?.name || "",
+          categoryId: p.category_id,
+          description: p.short_description || p.long_description || "",
+          images: p.product_images
+            ?.sort((a, b) => a.position - b.position)
+            .map((img) => img.path),
+          inStock: p.in_stock,
+          featured: p.featured,
+          bestSeller: p.best_seller,
+        }));
+        setProducts(mapped);
+      } else {
         console.log("Error loading products:", error);
-        setLoading(false);
-        return;
       }
 
-      // Map data
-      const mapped = data.map((p) => ({
-        id: p.id,
-        name: p.name,
-        price: p.price,
-        category: p.categories?.[0]?.name || "",
-        categoryId: p.category_id,
-        description: p.short_description || p.long_description || "",
-        images: p.product_images
-          ?.sort((a, b) => a.position - b.position)
-          .map((img) => img.path),
-        inStock: p.in_stock,
-        featured: p.featured,
-        bestSeller: p.best_seller,
-      }));
-
-      setProducts(mapped);
-      setLoading(false);
+      setLoadingProducts(false);
     };
 
     fetchProducts();
   }, [categoryParam, searchQuery, categories]);
 
-  // -----------------------------------------
-  // CATEGORY BUTTONS (UI)
-  // -----------------------------------------
-  const CATEGORIES = useMemo(() => {
-    return ["All", ...categories.map((c) => c.name)];
-  }, [categories]);
+  const CATEGORIES = useMemo(
+    () => ["All", ...categories.map((c) => c.name)],
+    [categories]
+  );
 
   const handleCategoryChange = (category) => {
     if (category === "All") {
@@ -123,17 +108,6 @@ const Browse = () => {
     setSearchParams({});
     setSearchQuery("");
   };
-
-  // -----------------------------------------
-  // RENDER
-  // -----------------------------------------
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-lg font-medium">Loading products...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen py-12">
@@ -212,24 +186,29 @@ const Browse = () => {
         </p>
 
         {/* Product Grid */}
-        {products.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {products.map((product, index) => (
-              <div key={product.id}>
-                <ProductCard product={product} />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-20">
-            <p className="text-muted-foreground text-lg mb-2">
-              No products found
-            </p>
-            <Button variant="accent" onClick={clearFilters}>
-              Clear Filters
-            </Button>
-          </div>
-        )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {loadingProducts ? (
+            [...Array(8)].map((_, i) => (
+              <div
+                key={i}
+                className="h-[300px] bg-muted/20 rounded animate-pulse"
+              />
+            ))
+          ) : products.length > 0 ? (
+            products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))
+          ) : (
+            <div className="col-span-full text-center py-20">
+              <p className="text-muted-foreground text-lg mb-2">
+                No products found
+              </p>
+              <Button variant="accent" onClick={clearFilters}>
+                Clear Filters
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
